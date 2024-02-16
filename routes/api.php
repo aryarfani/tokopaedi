@@ -1,10 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Seller\ProductController;
-use App\Http\Controllers\Api\User;
-use App\Http\Controllers\Api\Seller;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,28 +13,21 @@ use App\Http\Controllers\Api\Seller;
 |
 */
 
-Route::prefix('seller')->name('seller.')->group(function () {
-    Route::post('register', [Seller\AuthenticationController::class, 'register']);
-    Route::post('login', [Seller\AuthenticationController::class, 'login']);
 
-    Route::middleware('auth:sanctum,seller')->group(function () {
-        Route::post('logout', [Seller\AuthenticationController::class, 'logout']);
-        Route::get('me', [Seller\AuthenticationController::class, 'me']);
+Route::post('register', [Api\AuthenticationController::class, 'register']);
+Route::post('login', [Api\AuthenticationController::class, 'login']);
 
-        Route::apiResource('products', Seller\ProductController::class);
-    });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [Api\AuthenticationController::class, 'logout']);
+    Route::get('me', [Api\AuthenticationController::class, 'me']);
+
+    Route::get('products', [Api\ProductController::class, 'index']);
+
+    Route::post('orders', [Api\OrderController::class, 'store']);
+
+    Route::get('carts', [Api\CartController::class, 'getCartItems']);
+    Route::post('carts', [Api\CartController::class, 'addToCart']);
+    Route::post('carts\remove', [Api\CartController::class, 'removeFromCart']);
 });
 
-Route::prefix('user')->name('user.')->group(function () {
-    Route::post('register', [User\AuthenticationController::class, 'register']);
-    Route::post('login', [User\AuthenticationController::class, 'login']);
-
-    Route::middleware('auth:sanctum,user')->group(function () {
-        Route::post('logout', [User\AuthenticationController::class, 'logout']);
-        Route::get('me', [User\AuthenticationController::class, 'me']);
-
-        Route::get('products', [User\ProductController::class, 'index']);
-
-        Route::post('orders', [User\OrderController::class, 'store']);
-    });
-});
+Route::post('midtrans-callback', [Api\OrderController::class, 'handleCallback']);

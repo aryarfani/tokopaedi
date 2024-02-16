@@ -16,15 +16,17 @@
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">Home</a>
 
-            @auth
-                <a class="navbar-brand" href="{{ route('products.index') }}">Product</a>
-                <a class="navbar-brand" href="{{ route('categories.index') }}">Category</a>
-            @endauth
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="navbar-nav">
+                    @auth
+                        <a class="nav-link {{ Route::is('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">Product</a>
+                        <a class="nav-link {{ Route::is('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Category</a>
+                        <a class="nav-link {{ Route::is('orders.*') ? 'active' : '' }}" href="{{ route('orders.index') }}">Order</a>
+                    @endauth
+                </div>
                 <ul class="navbar-nav ms-auto">
                     @guest
                         <li class="nav-item">

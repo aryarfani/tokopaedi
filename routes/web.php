@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthenticationController;
@@ -31,4 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('categories', CategoryController::class)->except(['show']);
+
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 });

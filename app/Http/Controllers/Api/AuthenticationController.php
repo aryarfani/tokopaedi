@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Seller;
+namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class AuthenticationController extends Controller
             'password' => ['required', 'min:6'],
         ]);
 
-        $validatedData['role'] = 'seller';
+        $validatedData['role'] = 'user';
         User::create($validatedData);
 
         return response()->json([
