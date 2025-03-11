@@ -42,8 +42,10 @@ class AuthenticationController extends Controller
 
         return response()->json([
             'message' => 'You have successfully logged in!',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ],
         ]);
     }
 
@@ -56,12 +58,33 @@ class AuthenticationController extends Controller
         ]);
     }
 
+    public function update(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:250'],
+            'password' => ['nullable', 'min:6'],
+        ]);
+
+        if (!empty($validatedData['password'])) {
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
+        }
+
+        $request->user()->update($validatedData);
+
+        return response()->json([
+            'message' => 'Your profile has been successfully updated',
+            'data' => $request->user(),
+        ]);
+    }
+
     public function me(Request $request)
     {
         $user = $request->user();
 
         return response()->json([
-            'user' => $user,
+            'data' => $user,
         ]);
     }
 }

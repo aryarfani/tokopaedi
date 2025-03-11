@@ -53,6 +53,7 @@ class OrderController extends Controller
         ];
 
         $midtransTransaction = \Midtrans\Snap::createTransaction($params);
+        // $midtransTransaction = new \stdClass();
 
         // save order
         $order = Order::create([
@@ -60,13 +61,42 @@ class OrderController extends Controller
             'user_id' => $user->id,
             'status' => Order::STATUS_PENDING,
             'total_price' => $grossAmount,
-            'midtrans_payment_url' => $midtransTransaction->redirect_url,
-            'midtrans_snap_token' => $midtransTransaction->token,
+            'midtrans_payment_url' => @$midtransTransaction->redirect_url,
+            'midtrans_snap_token' => @$midtransTransaction->token,
         ]);
+
+        // save order items
+        foreach ($cartItems as $cartItem) {
+            $order->orderItems()->create([
+                'product_id' => $cartItem->product->id,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->product->price,
+            ]);
+        }
 
         auth()->user()->cartItems()->delete();
 
-        return response()->json($order);
+        return response()->json([
+            'data' => $order
+        ]);
+    }
+
+    public function index()
+    {
+        $orders = auth()->user()->orders()
+            ->with('orderItems.product')
+            ->paginate();
+
+        return response()->json([
+            'data' => $orders
+        ]);
+    }
+
+    public function show(Order $order)
+    {
+        return response()->json([
+            'data' => $order->load('orderItems.product')
+        ]);
     }
 
     public function handleCallback()

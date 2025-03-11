@@ -38,12 +38,18 @@ class ProductController extends Controller
             'name' => ['required', 'max:255'],
             'price' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
-            'image' => ['required', 'image'],
+            'image' => ['required', 'array'],
+            'image.*' => ['required', 'image'],
             'category_id' => ['required', 'exists:categories,id'],
         ]);
 
-        $validatedData['image'] = $request->file('image')->store('images', 'public');
-        Product::create($validatedData);
+        $product = Product::create($validatedData);
+
+        foreach ($validatedData['images'] as $value) {
+            $product->images()->create([
+                'image' => $value->store('images', 'public')
+            ]);
+        }
 
         return to_route('products.index')
             ->with('success', 'Product created successfully');

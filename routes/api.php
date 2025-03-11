@@ -13,21 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::post('register', [Api\AuthenticationController::class, 'register']);
 Route::post('login', [Api\AuthenticationController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('user/update', [Api\AuthenticationController::class, 'update']);
+    Route::get('user', [Api\AuthenticationController::class, 'me']);
     Route::post('logout', [Api\AuthenticationController::class, 'logout']);
-    Route::get('me', [Api\AuthenticationController::class, 'me']);
 
     Route::get('products', [Api\ProductController::class, 'index']);
-
+    Route::get('orders', [Api\OrderController::class, 'index']);
+    Route::get('orders/{order}', [Api\OrderController::class, 'show']);
     Route::post('orders', [Api\OrderController::class, 'store']);
 
     Route::get('carts', [Api\CartController::class, 'getCartItems']);
     Route::post('carts', [Api\CartController::class, 'addToCart']);
-    Route::post('carts\remove', [Api\CartController::class, 'removeFromCart']);
+    Route::post('carts/remove', [Api\CartController::class, 'removeFromCart']);
 });
 
 Route::post('midtrans-callback', [Api\OrderController::class, 'handleCallback']);

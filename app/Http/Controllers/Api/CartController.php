@@ -13,7 +13,9 @@ class CartController extends Controller
     {
         $cartItems = Auth::user()->cartItems()->with('product')->get();
 
-        return response()->json($cartItems);
+        return response()->json([
+            'data' => $cartItems
+        ]);
     }
 
     public function addToCart(Request $request)
@@ -31,7 +33,9 @@ class CartController extends Controller
             ['quantity' => $validatedData['quantity']]
         );
 
-        return response()->json(['message' => 'Successfully added to cart.']);
+        return response()->json([
+            'message' => 'Successfully added to cart.'
+        ]);
     }
 
     public function removeFromCart(Request $request)
@@ -42,6 +46,8 @@ class CartController extends Controller
 
         CartItem::where('id', $validatedData['cart_id'])->delete();
 
-        return response()->json(['message' => 'Successfully removed from cart.']);
+        return response()->json([
+            'message' => 'Successfully removed from cart.'
+        ]);
     }
 }
