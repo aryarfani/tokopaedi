@@ -16,12 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [Api\AuthenticationController::class, 'register']);
 Route::post('login', [Api\AuthenticationController::class, 'login']);
 
+Route::get('products', [Api\ProductController::class, 'index']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/update', [Api\AuthenticationController::class, 'update']);
     Route::get('user', [Api\AuthenticationController::class, 'me']);
     Route::post('logout', [Api\AuthenticationController::class, 'logout']);
 
-    Route::get('products', [Api\ProductController::class, 'index']);
     Route::get('orders', [Api\OrderController::class, 'index']);
     Route::get('orders/{order}', [Api\OrderController::class, 'show']);
     Route::post('orders', [Api\OrderController::class, 'store']);
