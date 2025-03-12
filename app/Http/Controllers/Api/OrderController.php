@@ -85,6 +85,7 @@ class OrderController extends Controller
     {
         $orders = auth()->user()->orders()
             ->with('orderItems.product')
+            ->latest()
             ->paginate();
 
         return response()->json([

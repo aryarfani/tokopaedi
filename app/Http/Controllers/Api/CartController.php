@@ -11,7 +11,9 @@ class CartController extends Controller
 {
     public function getCartItems()
     {
-        $cartItems = Auth::user()->cartItems()->with('product')->get();
+        $cartItems = Auth::user()->cartItems()
+            ->with('product.category')
+            ->get();
 
         return response()->json([
             'data' => $cartItems
