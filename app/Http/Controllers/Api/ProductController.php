@@ -29,7 +29,7 @@ class ProductController extends Controller
             ->when(request()->query('max_price'), function ($query, $max_price) {
                 $query->where('price', '<=', $max_price);
             })
-            ->paginate();
+            ->paginate(10);
 
         return response()->json($products);
     }
