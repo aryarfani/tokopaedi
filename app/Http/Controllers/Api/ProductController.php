@@ -16,9 +16,10 @@ class ProductController extends Controller
             'max_price' => ['nullable', 'numeric'],
         ]);
 
-        $products = Product::when(request()->query('name'), function ($query, $name) {
-            $query->where('name', 'LIKE', "%{$name}%");
-        })
+        $products = Product::query()->with('category')
+            ->when(request()->query('name'), function ($query, $name) {
+                $query->where('name', 'LIKE', "%{$name}%");
+            })
             ->when(request()->query('category_id'), function ($query, $category_id) {
                 $query->where('category_id', $category_id);
             })
