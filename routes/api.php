@@ -17,6 +17,7 @@ Route::post('register', [Api\AuthenticationController::class, 'register']);
 Route::post('login', [Api\AuthenticationController::class, 'login']);
 
 Route::get('products', [Api\ProductController::class, 'index']);
+Route::get('categories', [Api\CategoryController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/update', [Api\AuthenticationController::class, 'update']);
