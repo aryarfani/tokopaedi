@@ -16,7 +16,7 @@ class RecipeController extends Controller
         $title = request()->query('title');
         $category = request()->query('category_id');
 
-        $recipes = Recipe::latest()
+        $recipes = Recipe::with('category')->latest()
             ->when($title, function ($query, $title) {
                 $query->where('title', 'like', "%{$title}%");
             })
