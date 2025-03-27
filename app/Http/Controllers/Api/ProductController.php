@@ -21,7 +21,7 @@ class ProductController extends Controller
                 $query->where('name', 'LIKE', "%{$name}%");
             })
             ->when(request()->query('category_id'), function ($query, $category_id) {
-                $query->where('category_id', $category_id);
+                $query->whereIn('category_id', explode(',', $category_id));
             })
             ->when(request()->query('min_price'), function ($query, $min_price) {
                 $query->where('price', '>=', $min_price);
