@@ -49,7 +49,7 @@ class RecipeController extends Controller
         return response()->json([
             'message' => 'Recipe created successfully',
             'data' => $recipe,
-        ]);
+        ], 201);
     }
 
     /**
@@ -66,7 +66,7 @@ class RecipeController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Recipe $recipe)
-    {
+{
         $validatedData = $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
