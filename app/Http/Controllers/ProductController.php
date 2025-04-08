@@ -66,7 +66,7 @@ class ProductController extends Controller
             'name' => ['required', 'max:255'],
             'price' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
-            'image' => ['opsional', 'nullable', 'image'],
+            'image' => ['nullable', 'image'],
             'category_id' => ['required', 'exists:categories,id'],
         ]);
 

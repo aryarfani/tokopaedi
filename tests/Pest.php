@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,11 +45,11 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-// function actingAsAdmin()
-// {
-//     $admin = Admin::factory()->create();
-//     test()->actingAs($admin);
-// }
+function actingAsAdmin(): TestCase
+{
+    $admin = User::factory()->create(['role' => 'admin']);
+    return test()->actingAs($admin);
+}
 
 function using($test): TestCase
 {
