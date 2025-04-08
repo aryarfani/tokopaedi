@@ -84,7 +84,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = auth()->user()->orders()
-            ->with('orderItems.product')
+            ->with('orderItems.product.category')
             ->latest()
             ->paginate();
 
